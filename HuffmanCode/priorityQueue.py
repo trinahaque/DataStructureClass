@@ -3,8 +3,9 @@
 
 class Node:
     def __init__(self, data, rank):
-        self.data = task
+        self.data = data
         self.rank = rank
+        self.next = None
 
 class PriorityQueue:
     def __init__(self):
@@ -13,7 +14,39 @@ class PriorityQueue:
     # O(n) insert
     def insert(self, data, rank):
         newNode = Node(data, rank)
+        if self.head == None:
+            self.head = newNode
+        else:
+            current = self.head
+            # smallest rank first
+            if newNode.rank < self.head.rank:
+                self.head = newNode
+                newNode.next = current
+            else:
+                prev = None
+                while current:
+                    if newNode.rank > current.rank:
+                        # print ("current is ", current.rank)
+                        prev = current
+                        current = current.next
+                        # print ("current is ", current.rank)
+                prev.next = newNode
+                newNode.next = current
+
+    def printPQ(self):
+        if self.head == None:
+            print ("None")
+        else:
+            current = self.head
+            while current:
+                print (current.data, current.rank)
+                current = current.next
+
 
 
 pq = PriorityQueue()
 pq.insert("A", 2)
+pq.insert("C", 5)
+# pq.insert("B", 4)
+# pq.insert("A", 1)
+pq.printPQ()
