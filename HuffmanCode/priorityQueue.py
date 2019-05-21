@@ -25,11 +25,12 @@ class PriorityQueue:
             else:
                 prev = None
                 while current:
-                    if newNode.rank > current.rank:
+                    if newNode.rank < current.rank:
                         # print ("current is ", current.rank)
-                        prev = current
-                        current = current.next
-                        # print ("current is ", current.rank)
+                        break
+                    prev = current
+                    current = current.next
+                
                 prev.next = newNode
                 newNode.next = current
 
@@ -47,6 +48,8 @@ class PriorityQueue:
 pq = PriorityQueue()
 pq.insert("A", 2)
 pq.insert("C", 5)
-# pq.insert("B", 4)
-# pq.insert("A", 1)
+pq.insert("B", 4)
+pq.insert("E", 7)
+pq.insert("D", 6)
+
 pq.printPQ()
