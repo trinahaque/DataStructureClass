@@ -4,36 +4,38 @@ import string
 # Given task and its priority, implement priority queue
 
 class Node:
-    def __init__(self, data, rank):
+    def __init__(self, data=None, rank=None, left=None, right=None):
         self.data = data
         self.rank = rank
         self.next = None
+        self.left = left
+        self.right = right
 
 class PriorityQueue:
     def __init__(self):
         self.head = None
     
     # O(n) insert
-    def insert(self, newNode):
+    def insert(self, node):
         if self.head == None:
-            self.head = newNode
+            self.head = node
         else:
             current = self.head
             # smallest rank first
-            if newNode.rank < self.head.rank:
-                self.head = newNode
-                newNode.next = current
+            if node.rank < self.head.rank:
+                self.head = node
+                node.next = current
             else:
                 prev = None
                 while current:
-                    if newNode.rank < current.rank:
+                    if node.rank < current.rank:
                         # print ("current is ", current.rank)
                         break
                     prev = current
                     current = current.next
                 
-                prev.next = newNode
-                newNode.next = current
+                prev.next = node
+                node.next = current
     # O(1)
     def remove(self):
         # when list is empty
@@ -45,13 +47,20 @@ class PriorityQueue:
             return temp
 
 
+    def oneLeft(self):
+        if self.head.next == None:
+            return True
+        else:
+            return False
+
+
     def printPQ(self):
         if self.head == None:
             print ("None")
         else:
             current = self.head
             while current:
-                print (current.data, current.rank)
+                print (current.rank)
                 current = current.next
 
 
@@ -84,8 +93,24 @@ if __name__ == "__main__":
 
     for each in map:
         newNode = Node(each, map[each])
-        pq.insert(newNode)
-    pq.printPQ()
+        tree = Tree(newNode)
+        # print (tree.root)
+        pq.insert(tree.root)
+        # print (tree.root)
+    # pq.printPQ()
+
+    # Second Part
+    while not pq.oneLeft():
+        node1 = pq.remove()
+        # print (node1.data, node1.rank)
+        node2 = pq.remove()
+        # print (node2.data, node2.rank)
+        nodeNew = Node(None, node1.rank + node2.rank, node1, node2)
+        # print ("main", nodeNew.rank)
+        pq.insert(nodeNew)
+    print (pq.printPQ())
+    # return pq.remove()
+
 
 
 
