@@ -1,3 +1,5 @@
+import string
+
 # Implement priority queue with O(n) insert and O(1) remove
 # Given task and its priority, implement priority queue
 
@@ -12,8 +14,7 @@ class PriorityQueue:
         self.head = None
     
     # O(n) insert
-    def insert(self, data, rank):
-        newNode = Node(data, rank)
+    def insert(self, newNode):
         if self.head == None:
             self.head = newNode
         else:
@@ -33,6 +34,16 @@ class PriorityQueue:
                 
                 prev.next = newNode
                 newNode.next = current
+    # O(1)
+    def remove(self):
+        # when list is empty
+        if self.head == None:
+            return None
+        else:
+            temp = self.head
+            self.head = self.head.next
+            return temp
+
 
     def printPQ(self):
         if self.head == None:
@@ -44,12 +55,37 @@ class PriorityQueue:
                 current = current.next
 
 
+class Tree:
+    def __init__(self, root=None, left=None, right=None):
+        self.root = root
+        self.left = left
+        self.right = right
 
-pq = PriorityQueue()
-pq.insert("A", 2)
-pq.insert("C", 5)
-pq.insert("B", 4)
-pq.insert("E", 7)
-pq.insert("D", 6)
 
-pq.printPQ()
+def frequencyMap(string):
+    map = {}
+    for char in string:
+        if char == " " and "Sp" not in map:
+            map["Sp"] = 1
+        elif char == " " and "Sp" in map:
+            map["Sp"] += 1
+        elif char not in map:
+            map[char] = 1
+        else:
+            map[char] += 1
+    return map
+
+
+if __name__ == "__main__":
+    stringSample = "SUSIE SAYS IT IS EASY."
+    map = frequencyMap(stringSample)
+    pq = PriorityQueue()
+    tree = Tree()
+
+    for each in map:
+        newNode = Node(each, map[each])
+        pq.insert(newNode)
+    pq.printPQ()
+
+
+
