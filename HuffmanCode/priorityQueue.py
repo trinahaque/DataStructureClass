@@ -8,27 +8,29 @@ class Node:
         self.data = data
         self.rank = rank
         self.next = None
-        self.left = left
-        self.right = right
-
+        
 class PriorityQueue:
     def __init__(self):
         self.head = None
+        self.size = 0
     
     # O(n) insert
-    def insert(self, node):
+    def insert(self, tree):
+        # print ("node is")
+        node = Node(tree)
+        # print (node.data.root.rank)
         if self.head == None:
             self.head = node
         else:
             current = self.head
             # smallest rank first
-            if node.rank < self.head.rank:
+            if node.data.root.rank < self.head.data.root.rank:
                 self.head = node
                 node.next = current
             else:
                 prev = None
                 while current:
-                    if node.rank < current.rank:
+                    if node.data.root.rank < current.data.root.rank:
                         # print ("current is ", current.rank)
                         break
                     prev = current
@@ -36,6 +38,7 @@ class PriorityQueue:
                 
                 prev.next = node
                 node.next = current
+        self.size += 1
     # O(1)
     def remove(self):
         # when list is empty
@@ -44,6 +47,7 @@ class PriorityQueue:
         else:
             temp = self.head
             self.head = self.head.next
+            self.size -= 1
             return temp
 
 
@@ -55,12 +59,13 @@ class PriorityQueue:
 
 
     def printPQ(self):
+        # print ("head ", self.head)
         if self.head == None:
             print ("None")
         else:
             current = self.head
             while current:
-                print (current.rank)
+                # print ("printing", current.data.root.data, current.data.root.rank)
                 current = current.next
 
 
@@ -93,24 +98,32 @@ if __name__ == "__main__":
 
     for each in map:
         newNode = Node(each, map[each])
+        # print(newNode.data, newNode.rank)
         tree = Tree(newNode)
-        # print (tree.root)
-        pq.insert(tree.root)
-        # print (tree.root)
-    # pq.printPQ()
+        # print (tree.root.data, tree.root.rank)
+        pq.insert(tree)
+    pq.printPQ()
+    # print (pq.size)
 
-    # Second Part
-    while not pq.oneLeft():
+    # 2nd Step
+    print ("2nd Step")
+    while pq.size > 1:
         node1 = pq.remove()
-        # print (node1.data, node1.rank)
         node2 = pq.remove()
-        # print (node2.data, node2.rank)
-        nodeNew = Node(None, node1.rank + node2.rank, node1, node2)
-        # print ("main", nodeNew.rank)
-        pq.insert(nodeNew)
-    print (pq.printPQ())
-    # return pq.remove()
+        # print (node1.data.root.rank, node2.data.root.rank)
+        node3 = Node("", node1.data.root.rank + node2.data.root.rank)
+        # print (node3)
+        tree3 = Tree(node3, node1.data.root, node2.data.root)
+        # print (tree3.left.data, tree3.left.rank)
+        pq.insert(tree3)
+    # print (pq.size)
+    # pq.printPQ()
+    # print (pq.head.data.root.rank)
+    print (pq.head.data.root.rank, pq.head.data.left.rank, pq.head.data.left.data)
+
+        
 
 
-
+# output
+# 10, 01111, 10, 110, 1111, 00, 10, 010, 1110, 10, 00, 110, 10, 00, 1111, 010, 10, 1110, 01110
 
